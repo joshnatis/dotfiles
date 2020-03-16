@@ -15,3 +15,7 @@ alias ..="cd .."
 alias o="open ."
 alias mars="open ~/Downloads/Mars4_5.jar"
 alias eniac="ssh <First><Last><Num>@eniac.cs.hunter.cuny.edu"
+
+#for the linux box :)
+alias feh="feh -x --scale-down --auto-zoom"
+PS1='[\u@\h \W]\$ '

@@ -1,0 +1,11 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/Josh/phd2'
+let g:netrw_dirhist_2='/Users/Josh/phd2/stuff'
+let g:netrw_dirhist_3='/Users/Josh/phd2'
+let g:netrw_dirhist_4='/Users/Josh/phd2/stuff'
+let g:netrw_dirhist_5='/Users/Josh/phd2'
+let g:netrw_dirhist_6='/Users/Josh/phd2/stuff'
+let g:netrw_dirhist_7='/Users/Josh/phd2'
+let g:netrw_dirhist_8='/Users/Josh/phd2/stuff'
+let g:netrw_dirhist_9='/Users/Josh/scrobbler'

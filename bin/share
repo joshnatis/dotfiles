@@ -1,0 +1,37 @@
+#!/bin/bash
+
+IP=$(~/bin/getip)
+PORT="8080"
+
+create() {
+	curdir=$PWD
+	tmpdir=$(mktemp -d)
+	cd "$tmpdir"
+	python3 -m http.server $PORT & 2> /dev/null
+	SERVER_PID=$!
+	cd "$curdir"
+}
+
+destroy() {
+	kill $SERVER_PID
+	wait $SERVER_PID 2>/dev/null
+	rm -r "$tmpdir"
+	exit
+}
+
+trap destroy INT
+create
+tput bold; echo "$IP:$PORT" ; tput sgr0
+#echo "- to share other stuff, enter path or text."
+#echo "- ^C to quit"
+query="$1"
+while true; do
+	query="${query/#\~/$HOME}"
+	if [ -e "$query" ]; then
+		cp "$query" "$tmpdir"
+	else
+		echo "<p>$query</p>" >> "$tmpdir/text.html"
+	fi
+	read -p "%: " query
+done
+destroy

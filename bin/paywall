@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]; then
+	echo "Usage: paywall <article_url>"
+	exit 1
+fi
+
+url="$1"
+filename=$(basename "$url")
+wget "$url"
+open -a 'Google Chrome' "$filename" && $(sleep 2 && rm "$filename") &

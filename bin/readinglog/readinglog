@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	echo "Usage: `basename $0` <item>"
+	echo "       `basename $0` <item> <desc>"
+	exit
+fi
+
+if [ $# -lt 1 ]; then
+	tempfoo=`basename $0`
+	TMPFILE=`mktemp /tmp/${tempfoo}.XXXXXX` || exit 1
+	vim $TMPFILE
+
+	[ -s $TMPFILE ] || $(rm $TMPFILE && exit 1) # empty file
+
+	title=`head -n1 $TMPFILE`
+	desc=`tail -n+2 $TMPFILE | head -n1`
+
+	rm $TMPFILE
+else
+	title="$1"
+	desc="$2"
+fi
+
+desc=`echo "$desc" | tr '|' '｜'`
+datetime=`date "+%D-%I:%M:%S%p"`
+
+echo "$title | $datetime | $desc" >> ~/notes/readinglog

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -ne 3 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+	echo "Usage: $(basename $0) <audio 1> <audio 2> <output>"
+	echo "note: all files should be in mono"
+	exit
+fi
+
+ffmpeg -i "$1" -i "$2" -filter_complex amix=inputs=2:duration=longest "$3"

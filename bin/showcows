@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cowpath=/usr/local/Cellar/cowsay/3.04/share/cows
+
+ls $cowpath | while read line; do cowsay -f $line hi im $line; done

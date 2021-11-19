@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$1" = "--crop" ]; then
+	if [ "$#" -ne 4 ]; then
+		echo "Usage: mp3 --crop <time1> <time2> <link>"
+		exit 0
+	fi
+	
+	youtube-dl -x --postprocessor-args "-ss $2 -to $3" "$4" --audio-format mp3 --output "%(title)s.%(ext)s" $4
+
+else
+	if [ "$#" -ne 1 ]; then
+		echo "Usage: mp3 <link>"
+		exit 0
+	fi
+
+	youtube-dl --extract-audio --audio-format mp3 --output "%(title)s.%(ext)s" $1
+fi

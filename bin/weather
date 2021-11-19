@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cols=$COLUMNS
+rows=$LINES
+
+printf '\e[8;45;126t'
+clear
+curl -s http://wttr.in/
+read -n 1
+printf '\e[8;24;80t'
+clear

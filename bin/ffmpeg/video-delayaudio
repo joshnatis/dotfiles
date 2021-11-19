@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 3 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+	echo "Usage: $(basename $0) <input> <delay in seconds> <output>"
+	echo "e.g. $(basename $0) input.mp4 5.3 output.mp4"
+	echo "* delays audio within a video file by some value"
+	exit
+fi
+
+ffmpeg -i "$1" -itsoffset "$2" -i "$1" -map 0:v -map 1:a -c copy "$3"

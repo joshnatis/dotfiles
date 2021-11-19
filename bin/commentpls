@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "/******************************************************************************"
+echo "  Title          : $1"
+echo "  Author         : `whoami`"
+printf "  Created on     : %s\n" "`date "+%B %d %Y"`"
+echo "  Description    : "
+echo "  Usage          : "
+echo "  Build with     : "
+echo "******************************************************************************/"

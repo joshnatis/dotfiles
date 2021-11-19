@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 2 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "Usage: $(basename $0) <input> <output>"
+	echo "e.g. $(basename $0) input.mp3 output.png"
+	echo "* generates an image of the waveform of an audio file"
+	exit
+fi
+
+ffmpeg -i "$1" -filter_complex ""aformat=channel_layouts=mono,showwavespic=s=1000x200"" -frames:v 1 "$2"

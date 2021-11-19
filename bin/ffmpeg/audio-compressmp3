@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ $# -lt 1 ] || [ $# -gt 2 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+	echo "Usage: $(basename $0) <input> [output]"
+	echo "e.g. $(basename $0) input.mp3 output.mp3"
+	echo "* compresses mp3 to 128k"
+	exit
+fi
+
+
+if [ $# -eq 2 ]; then
+	ffmpeg -i "$1" -map 0:a:0 -b:a 128k "$2"
+else
+	ffmpeg -i "$1" -map 0:a:0 -b:a 128k "$1"
+fi

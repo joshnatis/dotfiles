@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "$1" = "--help" ] || [ "$1" = "-h" ] || [ $# -eq 0 ]; then
+	echo "Usage: $(basename $0) vid1.mp4 vid2.mp4 vid3.mp4 ..."
+	echo " * concatenates videos one after the other, outputs into FINAL.mp4"
+	exit
+fi
+
+printf "file '%s'\n" $@ > /tmp/videos.txt                
+ffmpeg -f concat -i /tmp/videos.txt -c copy FINAL.mp4
+rm /tmp/videos.txt

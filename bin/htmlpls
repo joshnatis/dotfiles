@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo '<!DOCTYPE html>'
+echo '<html lang="en">'
+echo ''
+echo '<head>'
+printf '\t<title>Title</title>\n'
+printf '\t<meta charset="utf-8"/>\n'
+printf '\t<meta name="viewport" content="width=device-width, initial-scale=1"/>\n'
+printf '\t<link rel="stylesheet" href="styles.css">\n'
+printf '\t<link rel="icon" href="favicon.png">\n'
+echo '</head>'

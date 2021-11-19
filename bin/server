@@ -1,0 +1,19 @@
+#!/bin/bash
+
+DIRECTORY=""
+if [ -z "$1" ]; then
+	echo "Usage: server <directory_path>"
+	exit
+else
+	DIRECTORY="$1"
+fi
+
+cd "$DIRECTORY"
+
+if [ ! -f "index.html" ]; then
+	DEFAULT_PAGE_HTML="<!DOCTYPE html><html><head><title>Nice!</title></head><body><h1>It worked <3</h1>	</body></html>"
+	echo "$DEFAULT_PAGE_HTML" > index.html
+fi
+
+
+python3 -m http.server 8080

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+	echo "no"
+	exit
+fi
+
+file="$1"
+name=${file%.*} #remove file extension
+
+groff -e -t -p -ms "$file" > temp.ps
+cupsfilter temp.ps > "$name.pdf"
+
+rm temp.ps
+open "$name.pdf"

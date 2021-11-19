@@ -1,0 +1,39 @@
+#!/bin/bash
+
+print_border() {
+	for i in `seq 80`; do printf "=" ; done
+	echo
+}
+
+if [ "$1" = "today" ]; then
+	while read line ; do
+		DAY=`echo $line | cut -d'|' -f2 | cut -d'-' -f1 | xargs`
+		if [ "$DAY" = `date "+%D"` ]; then
+			URL=`echo $line | cut -d'|' -f1`
+			DESC=`echo $line | cut -d'|' -f3`
+			echo "$URL"
+			[ "$DESC" = "" ] || echo "$DESC" | fmt
+			print_border
+		else
+
+			exit 0
+		fi
+	done < <(tail -r ~/notes/readinglog)
+
+elif [ "$1" = "all" ]; then
+	TAB="  "
+	prevday=""
+	while read line ; do
+		DAY=`echo $line | cut -d'|' -f2 | cut -d'-' -f1 | xargs`
+		if [ "$DAY" != "$prevday" ]; then
+			print_border
+			tput bold; echo $DAY ; tput sgr0
+			prevday="$DAY"
+		fi
+		URL=`echo $line | cut -d'|' -f1`
+		DESC=`echo $line | cut -d'|' -f3`
+		echo "$TAB * $URL"
+		[ "$DESC" = "" ] || (tput setaf 5; echo "$TAB$TAB +$DESC" | fmt && echo; tput sgr0)
+	done < ~/notes/readinglog | less -iRS
+fi
+

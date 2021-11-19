@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# imgs2pdf [images]
+
+if [ $# -lt 1 ]; then
+	echo "Usage: `basename $0` <images> [output.pdf]"
+	exit 1
+fi
+
+INPUT_TYPE=`echo "${1#*.}"`
+for last; do true; done # get last arg in variable 'last'
+LAST_ARG_TYPE=`echo "${last#*.}"`
+
+if [ "$LAST_ARG_TYPE" = "pdf" ]; then
+	OUTPUT_FILE="$last"
+else
+	OUTPUT_FILE="output.pdf"
+fi
+
+tmp_dir=`mktemp -d -t pdf` && \ #individual pdfs will go here
+sips -s format pdf "$@" --out "$tmp_dir" && \
+pdfcat -o "$OUTPUT_FILE" "$tmp_dir"/*.pdf && \
+rm -rif "$tmp_dir"
+
+#for img in "$@"; do
+#	if ["$LAST_ARG_TYPE" = "pdf" ] && [ "$img" = "$last" ]; then
+#		continue
+#	fi
+#	sips -s format pdf "$img" --out "$img.pdf"
+#done

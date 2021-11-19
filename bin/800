@@ -1,0 +1,49 @@
+#!/bin/bash
+
+print_help() {
+	echo "Usage: $0 file.mp3 [pitch factor]"
+	echo "e.g. 1/2 to slow by half, 2 to double speed"
+	exit
+}
+
+pitch_factor="2/3"
+write=false
+
+if [ $# -eq 1 ]; then
+	if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+		print_help
+	fi
+elif [ $# -eq 2 ]; then
+	pitch_factor="$2"
+elif [ $# -eq 4 ]; then
+	if [ "$3" = "-w" ]; then
+		pitch_factor="$2"
+		write=true
+		outfile=$4
+	else
+		print_help
+	fi
+
+else
+	print_help
+fi
+
+sample_rate=$(ffprobe -loglevel panic -show_streams "$1" | grep "sample_rate" | cut -d= -f 2)
+slowed=$(echo "$sample_rate * $pitch_factor" | bc)
+duration=$(ffprobe -loglevel panic -show_streams "$1" | grep "duration=" | cut -d= -f 2)
+duration=$(echo "($duration + (1 - $pitch_factor) * $duration)/1" | bc)
+
+#sign="+"
+#if [ $(echo "$pitch_factor > "
+
+if [ $write = true ]; then
+	ffmpeg -i "$1" -af "asetrate=$slowed" $outfile
+	exit
+fi
+
+ffplay -nodisp -loglevel panic -af "asetrate=$slowed" "$1" &
+pid=$!
+#read -n 1 -s -t $(echo "$duration" | bc)
+read -n 1 -s -t "${duration%.*}"
+#read -n 1 -s
+kill $pid

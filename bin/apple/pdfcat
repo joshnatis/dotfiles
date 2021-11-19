@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ $# -lt 2 ]; then
+	echo "Usage: pdfcat -o output.pdf input1.pdf input2.pdf ..."
+	exit
+fi
+
+"/System/Library/Automator/Combine PDF Pages.action/Contents/Resources/join.py" "$@"

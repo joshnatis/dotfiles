@@ -1,0 +1,20 @@
+#!/bin/bash
+
+NAME="OUT" # by default, your file will be called OUT
+FILETYPE="mp4" # by default, your file will be in .mp4 format
+
+# Checks arguments for specified name and filetype
+for var in "$@"
+do
+	if [ $var == "--mov" ]
+	then
+		FILETYPE="mov"
+	else 
+		# there is an argument but it isn't specifying format, so we will use it as a name
+		NAME=$var
+	fi
+done
+
+echo "Recording into $NAME.$FILETYPE"
+
+ffmpeg -f avfoundation -i "1:0" -pix_fmt yuv420p -r 25 $NAME.$FILETYPE

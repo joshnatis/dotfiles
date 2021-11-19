@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 2 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+	echo "Usage: $(basename $0) <input> <output>"
+	echo "e.g. $(basename $0) input.mp3 output.mp3"
+	echo "* reduces audio file to a single channel (mono)"
+	exit
+fi
+
+ffmpeg -i "$1" -ac 1 "$2"

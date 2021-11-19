@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 3 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+	echo "Usage: $(basename $0) <input> <volume in decibals> <output>"
+	echo "e.g. $(basename $0) input.mp4 2.3 output.mp4"
+	echo "* changes volume of audio within a video file"
+	exit
+fi
+
+ffmpeg -i "$1" -vcodec copy -af "volume=$2dB" "$3"

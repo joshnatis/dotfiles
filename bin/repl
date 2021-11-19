@@ -1,0 +1,198 @@
+#!/bin/bash
+
+ctrl_c()
+{
+	cd .. &&
+	rm -rf ."$LANGUAGE"_repl
+	echo ""
+	exit
+}
+
+selectLanguage()
+{
+	if [ "$1" = "java" ] || [ "$1" = "Java" ]; then
+		LANGUAGE="java"
+	elif [ "$1" = "C" ] || [ "$1" = "c" ]; then
+		LANGUAGE="c"
+	elif [ "$1" = "c++" ] || [ "$1" = "C++" ] || [ "$1" = "cpp" ] || [ "$1" = "Cpp" ]; then
+		LANGUAGE="cpp"
+	elif [ "$1" = "python" ] || [ "$1" = "py" ]; then
+		LANGUAGE="py"
+	else
+		return 1
+	fi
+}
+
+print_commands()
+{
+	echo "======="
+	echo "RESTART - reset state"
+	echo "EXIT - quit"
+	echo "FREEWRITE - turn off repl"
+	echo "REPL - turn on repl"
+
+	if [ "$LANGUAGE" = "cpp" ] || [ "$LANGUAGE" = "c" ]; then
+		echo "INCLUDE - insert #include directive"
+	elif [ "$LANGUAGE" = "java" ] || [ "$LANGUAGE" = "py" ]; then
+		echo "IMPORT - insert import directive"
+	fi
+
+	echo "PEEK - view your program"
+	echo "======="
+	echo ""
+}
+
+start()
+{
+	trap ctrl_c INT
+	print_commands
+
+	mkdir ."$LANGUAGE"_repl && 
+	cd ."$LANGUAGE"_repl &&
+	touch source_code &&
+
+	if [ "$LANGUAGE" = "cpp" ]; then
+		echo "#include <iostream>" > source_code
+		echo "using namespace std; int main(){" >> source_code
+
+	elif [ "$LANGUAGE" = "c" ]; then
+		echo "#include <stdio.h>" > source_code
+		echo "int main(){" >> source_code
+
+	elif [ "$LANGUAGE" = "java" ]; then
+		echo "import java.util.*;" > source_code
+		echo "public class execute { " >> source_code
+		echo "public static void main (String[] args){" >> source_code
+
+	elif [ "$LANGUAGE" = "py" ]; then
+		: #no boilerplate
+
+	fi
+}
+
+compile_and_run()
+{
+	cat source_code > execute."$LANGUAGE"
+	
+	if [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
+		echo "}" >> execute."$LANGUAGE" &&
+
+		if [ "$LANGUAGE" = "c" ]; then
+			gcc execute.c
+		else
+			g++ execute.cpp
+		fi
+	
+		if [ $? -eq 0 ]; then
+			./a.out &&
+			echo ""
+		else
+			clean
+		fi
+
+	elif [ "$LANGUAGE" = "java" ]; then
+		echo "}}" >> execute.java &&
+		javac execute.java
+	
+		if [ $? -eq 0 ]; then
+			java execute &&
+			echo ""
+		else
+			clean
+		fi
+
+	elif [ "$LANGUAGE" = "py" ]; then
+		python3 execute.py
+
+	fi
+}
+
+execute_command()
+{
+	if [ "$1" = "RESTART" ]; then
+		clear
+		print_commands
+		clean
+
+	elif [ "$1" = "EXIT" ]; then
+		ctrl_c
+
+	elif [ "$1" = "FREEWRITE" ]; then
+		read -r -p "∞ " command
+		while [ "$command" != "REPL" ]; do
+			echo "$command" >> source_code
+			read -r -p "∞ " command
+		done
+		#compile_and_run
+
+	elif [ "$1" = "REPL" ]; then
+		:
+
+	elif [ "$1" = "INCLUDE" ] || [ "$1" = "IMPORT" ]; then
+		 if [ "$LANGUAGE" = "c" ] || [ "$LANGUAGE" = "cpp" ]; then
+		 	read -r -p "Type your include directive: " inc
+		elif [ "$LANGUAGE" = "java" ] || [ "$LANGUAGE" = "py" ]; then
+			read -r -p "Type your import directive: " inc
+		fi
+
+		cat source_code > temp
+		echo "$inc" > source_code
+		cat temp >> source_code
+
+	elif [ "$1" = "PEEK" ]; then
+		echo "---"
+		cat source_code
+		echo "---"
+
+	else
+		echo "$1" >> source_code
+		compile_and_run
+
+	fi
+}
+
+clean()
+{
+	if [ "$LANGUAGE" = "cpp" ]; then
+		echo "#include <iostream>" > source_code
+		echo "using namespace std; int main(){ " >> source_code
+
+	elif [ "$LANGUAGE" = "c" ]; then
+		echo "#include <stdio.h>" > source_code
+		echo "int main(){ " >> source_code
+
+	elif [ "$LANGUAGE" = "java" ]; then
+		echo "import java.util.*;" > source_code
+		echo "public class execute { " >> source_code
+		echo "public static void main (String[] args){" >> source_code
+
+	elif [ "$LANGUAGE" = "py" ]; then
+		echo "" > source_code
+
+	fi
+}
+
+# --- Entry Point
+
+LANGUAGE="$1"
+
+if [ $# -ne 1 ]; then
+	echo "Usage: ./repl <language>"
+	exit 1
+elif [ "$1" = "-h" ] || [ "$1" = "help" ] || [ "$1" = "--help" ]; then
+	echo "Call with one argument (the language of your choice, e.g. ./repl c++)"
+	echo "Currently available languages: C, C++, Java"
+	exit 1
+elif ! selectLanguage "$1"; then
+	echo "ERROR: $1 is not currently a supported language."
+	echo "Available languages: C, C++, Java"
+	exit 1
+fi
+
+# -- Entry Point
+
+start
+while :; do
+	read -r -p "λ " command
+	execute_command "$command"
+done

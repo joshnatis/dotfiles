@@ -1,0 +1,41 @@
+#!/bin/bash
+trap ctrl_c INT
+
+ctrl_c() {
+	stty sane
+	exit
+}
+
+if [ $# -eq 0 ]; then
+	echo Alex
+	echo Amelie
+	echo Anna
+	echo Daniel
+	echo Fiona
+	echo Fred
+	echo Jorge
+	echo Juan
+	echo Karen
+	echo Luca
+	echo Maged
+	echo Mei-Jia
+	echo Melina
+	echo Milena
+	echo Paulina
+	echo Samantha
+	echo Sara
+	echo Ting-Ting
+	echo Victoria
+	echo Xander
+	echo Yuri
+
+elif [ "$1" = "-f" ]; then
+	echo "type y/n for each voice"
+	say -v ? | awk '{ print $1 }' | while read LINE; do say -v $LINE hi im $LINE; read -n 1 -s CHOICE <&1; [ "$CHOICE" = "y" ] && echo $LINE; done
+
+fi
+# say -v ? prints newline separated list of all available voices
+# only first col is relevant (the name), awk $1
+# read one line at a time
+# for each, say "hi im _voice name_" in the voice
+# press y if you like (name will print out), otherwise it wont

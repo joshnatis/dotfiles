@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ "$1" = "-h" ] || [ "$1" = "--help" ] || [ $# -lt 2 ]; then
+	echo "Usage: $(basename $0) <image> <audio> <output>"
+	echo "e.g. $(basename $0) image.png audio.mp3 output.mp4"
+	echo "* generates a video from an image and an audio file"
+	exit
+fi
+
+ffmpeg -loop 1 -i "$1" -i "$2" -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest "$3"

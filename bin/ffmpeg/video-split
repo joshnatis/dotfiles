@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# -ne 2 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ] ; then
+	echo "Usage: $(basename $0) <video> <cut time>"
+	echo "e.g. $(basename $0) video.mp4 00:02:30"
+	echo "* splits a video into multiple files at time specified (output__.mp4)"
+	exit
+fi
+
+ffmpeg -i "$1" -c copy -map 0 -segment_time "$2" -f segment -reset_timestamps 1 output%03d.mp4

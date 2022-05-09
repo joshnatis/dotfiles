@@ -10,6 +10,9 @@ set modelines=0 " CVE-2007-2438
 set nocompatible
 set backspace=2
 
+" set nofixendofline
+" set noswapfile
+
 let mapleader = ","
 
 " :W happens more often than :w :-(
@@ -21,13 +24,6 @@ nnoremap <leader>f :filetype detect<CR>
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 " toggle ruler
 nnoremap <leader>8 :call ToggleCC()<CR>
-" wrap at 80 columns
-nnoremap <leader>8 :%!fmt %<CR>
-
-" Groff .ms --> PDF
-autocmd BufRead,BufNewFile *.ms nnoremap <leader><leader> :w<CR>:!gack %<CR><CR>
-" Markdown  --> HTML
-autocmd BufRead,BufNewFile *.md nnoremap <leader><leader> :w<CR>:!phd % %:r.html<CR><CR>
 
 " delete trailing whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
@@ -64,3 +60,10 @@ fun! ToggleCC()
 		set cc=
 	endif
 endfun
+
+" Groff .ms --> PDF
+autocmd BufRead,BufNewFile *.ms nnoremap <leader><leader> :w<CR>:!gack %<CR><CR>
+" Markdown  --> HTML
+autocmd BufRead,BufNewFile *.md nnoremap <leader><leader> :w<CR>:!phd % %:r.html<CR><CR>
+
+autocmd FileType go setlocal tabstop=4 | colorscheme acme

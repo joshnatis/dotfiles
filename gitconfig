@@ -1,0 +1,9 @@
+[alias]
+        unstage = reset HEAD --
+        last = log -1 HEAD --stat
+        ls = log --oneline
+
+        br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+
+[pull]
+        ff = only

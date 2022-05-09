@@ -9,6 +9,7 @@ alias mv="mv -i"
 alias cp="cp -i"
 alias ..="cd .."
 alias la="ls -AF"
+alias duh="du -h -d1"
 alias p="python3"
 alias python="python3"
 
@@ -20,7 +21,6 @@ alias shrug="¯\_(ツ)_/¯"
 alias grep="grep --color=auto"
 alias ls="ls --color=auto"
 alias cdiff="git diff --no-index --"
-alias prettylog="git log --graph --pretty=format:'%Cred%h%Creset %s%C(yellow)%d%Creset %Cgreen(%cr)%Creset [%an]' --abbrev-commit --date=relative"
 export GCC_COLORS="error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01"
 
 #======== LE MAC =======#
@@ -34,6 +34,8 @@ if [ $(tty) = "/dev/ttys000" ]; then
 #	(afplay ~/Downloads/startup.mp3 -v 0.1 &) > /dev/null 2>&1
 fi
 
+export HOMEBREW_NO_AUTO_UPDATE=1
+
 #====== LE LINUX ======#
 alias feh="feh -x --scale-down --auto-zoom"
 PS1='[\u@\h \W]\$ '
@@ -44,6 +46,7 @@ alias copy="xclip"
 alias wf="cd /mnt/c/Users/josh"
 alias open="explorer.exe"
 alias copy="clip.exe"
+alias d="typeahead-diff"
 
 #===== READING LOG =====#
 alias rl="readinglog"

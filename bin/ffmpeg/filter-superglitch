@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ $# -ne 2 ] && [  $# -ne 3 ]; then
+	echo "Usage: `basename $0` <input> <output> [duration]"
+	echo "WARNING: BIG FILE"
+	exit 1
+fi
+
+[ $# -eq 3 ] && duration="$3" || duration="5"
+ffmpeg -t "$duration" -i "$1" -f rawvideo -pix_fmt yuv420p .result.yuv
+ffmpeg -f rawvideo -video_size 640x480 -pix_fmt yuv420p -i .result.yuv "$2"
+rm .result.yuv

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo "Usage: `basename $0` <input> <output>"
+	exit 1
+fi
+
+ffmpeg -i "$1" -vf \
+   "
+      scale=-2:360,
+      tblend=all_mode=difference128,
+      tblend=all_mode=difference128,
+      tblend=all_mode=difference128,
+      spp=4:10,
+      tblend=all_mode=average,
+      tblend=all_mode=difference128,
+      tblend=all_mode=difference128,
+      tblend=all_mode=difference128
+   " "$2"

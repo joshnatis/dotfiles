@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ $# -ne 2 ] && [ $# -ne 3 ]; then
+	echo "Usage: `basename $0` <input> <output> [delay]"
+	echo "example delay: 00.25"
+	exit 1
+fi
+
+[ $# -eq 3 ] && delay="$3" || delay="00.25"
+inputflags=""
+ndelay=0
+for i in {1..3}; do
+	ndelay=`echo $ndelay $delay | awk '{printf "%f", $1 + $2}'`
+	inputflags="$inputflags -i $1 -ss $ndelay"
+done
+
+ffmpeg $inputflags \
+	-filter_complex "[0][1]blend=all_mode=lighten[a];[1][2]blend=all_mode=lighten[b];[a][b]blend=all_mode=lighten[p];[0][p]blend=all_mode=lighten[o]" \
+	-map "[o]" \
+	-c:v h264 \
+	-crf 15 \
+	"$2"

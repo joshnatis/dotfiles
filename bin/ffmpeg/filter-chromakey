@@ -1,0 +1,26 @@
+#!/bin/sh
+
+if [ $# -ne 4 ] && [ $# -ne 5 ]; then
+	echo "Usage: `basename $0` <input> <hexcolor> <overlay> <output> [similarity]"
+	echo "e.g. 0xffffff"
+	exit 1
+fi
+
+# resize $1 to size of $2
+resize() {
+	vid1="$1"
+	vid2="$2"
+
+	target_dims=`video-dims $2 | sed 's/x/:/'`
+	video-scale "$1" "$target_dims" .temp.mp4 || (echo "resize failed" && exit 1)
+}
+
+hexcolor="$2"
+[ $# -eq 5 ] && similarity="$5" || similarity=0.3
+blend=0.2
+
+resize "$3" "$1"
+
+ffmpeg -i ".temp.mp4" -i "$1" -filter_complex "[1:v]colorkey=$hexcolor:$similarity:$blend[ckout];[0:v][ckout]overlay[out]" -map '[out]' "$4"
+
+rm .temp.mp4

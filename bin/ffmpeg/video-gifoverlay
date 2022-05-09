@@ -1,0 +1,17 @@
+#!/bin/sh
+
+echo $#
+[ "$1" = "-h" ] || [ "$1" = "--help" ]; help=$?
+[ $# -ne 3 ] && [ $# -ne 5 ]; valid_args=$?
+#if [ $(($help == 0)) ] || [ $# -ne 3 ] || [ $# -ne 5 ]; then
+if [ $(($help == 0)) ] || $(($valid_args == 0)); then
+	echo "Usage: `basename $0` <video> <gif> [x y] <output>"
+	echo "overlays a looping gif over a video"
+	echo "note: valid position values also include W, H (e.g. W-100)"
+	exit
+else
+	echo hi
+fi
+
+
+#ffmpeg -i test.mp4 -ignore_loop 0 -i loop.gif -filter_complex "[0][1]overlay=0:H-100" output.mp4

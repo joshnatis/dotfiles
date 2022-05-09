@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo "Usage: `basename $0` <input> <output>"
+	exit 1
+fi
+
+ffmpeg -i "$1" -i "$1" -i "$1" -c:v hevc -crf 40 -b:v 20k -filter_complex "[0][1][2]displace=edge=wrap[middle];[middle]stereo3d=ar" -y "$2"

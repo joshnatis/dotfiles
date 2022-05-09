@@ -9,3 +9,6 @@ url="$1"
 filename=$(basename "$url")
 wget "$url"
 open -a 'Google Chrome' "$filename" && $(sleep 2 && rm "$filename") &
+
+#filename=".swag.html"
+#curl "$url" > "$filename"

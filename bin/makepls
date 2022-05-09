@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo 'CC := g++'
+echo 'CFLAGS := -Wall -Wextra -pedantic'
+echo 'LDFLAGS := -lncurses'
+echo
+echo 'snake: snake.cpp'
+echo '	$(CC) $(CFLAGS) $(LDFLAGS) snake.cpp -o snake'
+echo
+echo '.PHONY: clean'
+echo 'clean:'
+echo '	\\rm *.o'

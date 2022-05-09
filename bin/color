@@ -1,0 +1,14 @@
+#!/bin/sh
+
+begin=31
+end=38
+
+i=$begin
+
+IFS=''
+while read line; do
+	printf "\033[${i}m$line\n"
+	i=$(($i + 1))
+	[ $i = $end ] && i=$begin
+done
+tput sgr0

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo "Usage: `basename $0` <input> <output>"
+	exit 1
+fi
+
+dims=`ffprobe -v error -select_streams v -show_entries stream=width,height -of csv=p=0:s=x "$1"`
+
+ffmpeg -i "$1" -f lavfi -i color=gray:s=$dims -f lavfi -i color=black:s=$dims -f lavfi -i color=white:s=$dims -filter_complex threshold "$2"

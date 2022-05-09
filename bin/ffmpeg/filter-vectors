@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo "Usage: `basename $0` <input> <output>"
+	exit 1
+fi
+
+ffmpeg -flags2 +export_mvs -i "$1" -vf codecview=mv=pf+bf+bb -y "$2"

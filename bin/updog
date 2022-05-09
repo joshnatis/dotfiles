@@ -1,0 +1,44 @@
+#!/bin/sh
+
+if [ $# -lt 1 ]; then
+	echo "Appends provided song files' information to josh8 tunes JSON map"
+	echo "Usage: `basename $0` <file> [file] ..."
+	exit
+fi
+
+LF="\\n"
+TAB="    "
+
+ROOT='/Users/josh/comp/src/josh8/tunes'
+
+for file in "$@"; do
+	converted_path="__`basename "$file" | sed 's/ /_/g'`"
+	cp "$file" "$ROOT/songs/$converted_path" || exit 1
+
+	seconds="`afinfo "$file" \
+	| grep 'duration' \
+	| cut -d' ' -f3 \
+	| awk '{printf("%d\n",$1 + 0.5)}'`" # round to whole number
+
+	# convert to MM:SS format
+	duration=`date -ju -f "%s" $seconds "+%M:%S"`
+	# trim leading double 00s, e.g. 00:20 -> 0:20
+	[ ${duration::1} = "0" ] && duration=${duration#?}
+
+	name=`basename "$file" \
+	| sed 's/__//' \
+	| sed 's/_/ /g' \
+	| cut -d'.' -f1`
+
+	# create JSON
+	line1="$TAB\"name\": \""$name"\","
+	line2="$TAB\"duration\": \"$duration\","
+	line3="$TAB\"file\": \""$converted_path"\","
+	json="}, {$LF$line1$LF$line2$LF$line3$LF"
+
+	# insert into this file
+	DEST="$ROOT/scripts.js"
+	# right before this line (hack)
+	ANCHOR='}];'
+	sed -i.bak "s/$ANCHOR/$json$ANCHOR/" "$DEST"
+done

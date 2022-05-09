@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo "Usage: `basename $0` <input> <output>"
+	exit 1
+fi
+
+ffmpeg -y -i "$1" -filter_complex "[0:a]showfreqs=s=640x480[v]" -map '[v]' -map '0:a' -c:a copy "$2"

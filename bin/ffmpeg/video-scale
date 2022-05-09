@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# -ne 3 ]; then
+	echo "Usage: `basename $0` <input> <dims> <output>"
+	echo "e.g. 480:360, 720:480, etc"
+	exit 1
+fi
+ffmpeg -i "$1" -vf scale="$2" "$3"

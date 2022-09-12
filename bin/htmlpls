@@ -1,12 +1,13 @@
-#!/bin/bash
+#!/bin/sh
 
-echo '<!DOCTYPE html>'
-echo '<html lang="en">'
-echo ''
-echo '<head>'
-printf '\t<title>Title</title>\n'
-printf '\t<meta charset="utf-8"/>\n'
-printf '\t<meta name="viewport" content="width=device-width, initial-scale=1"/>\n'
-printf '\t<link rel="stylesheet" href="styles.css">\n'
-printf '\t<link rel="icon" href="favicon.png">\n'
-echo '</head>'
+printf '<!DOCTYPE html>
+<html lang="en">
+
+<head>
+\t<title>Title</title>
+\t<meta charset="utf-8"/>
+\t<meta name="viewport" content="width=device-width, initial-scale=1"/>
+\t<link rel="stylesheet" href="styles.css">
+\t<link rel="icon" href="favicon.png">
+</head>
+'

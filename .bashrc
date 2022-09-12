@@ -35,6 +35,10 @@ if [ $(tty) = "/dev/ttys000" ]; then
 fi
 
 export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ANALYTICS=1
+
+# cupsctl WebInterface=yes
+# http://localhost:631/printers/
 
 #====== LE LINUX ======#
 alias feh="feh -x --scale-down --auto-zoom"

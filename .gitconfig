@@ -2,8 +2,15 @@
         unstage = reset HEAD --
         last = log -1 HEAD --stat
         ls = log --oneline
-
+        lg = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        fist = log --follow -p --
         br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
-
+        p = push
 [pull]
         ff = only
+[pager]
+        log = diff-highlight | less
+        show = diff-highlight | less
+        diff = diff-highlight | less
+[status]
+        showUntrackedFiles = no

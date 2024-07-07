@@ -61,6 +61,12 @@ fun! ToggleCC()
 	endif
 endfun
 
+set noswapfile
+
+" as a wise man once said, FckThatParen
+" let g:loaded_matchparen=1
+hi MatchParen cterm=none ctermbg=none ctermfg=green
+
 " Groff .ms --> PDF
 autocmd BufRead,BufNewFile *.ms nnoremap <leader><leader> :w<CR>:!gack %<CR><CR>
 " Markdown  --> HTML
